@@ -411,6 +411,11 @@ struct Ptr
     template<typename Y>
     Ptr<Y> dynamicCast() const;
 
+#ifdef CV_CXX_MOVE_SEMANTICS
+    Ptr(Ptr&& o);
+    Ptr& operator = (Ptr&& o);
+#endif
+
 private:
     detail::PtrOwner* owner;
     T* stored;
@@ -571,6 +576,8 @@ private:
 
     char* allocate(size_t len); // len without trailing 0
     void deallocate();
+
+    String(int); // disabled and invalid. Catch invalid usages like, commandLineParser.has(0) problem
 };
 
 //! @} core_basic
